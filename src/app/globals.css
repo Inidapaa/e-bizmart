@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-family: var(--font-geist-sans), system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+.top-bar {
+  background: #0a0a0a;
+  color: #fff;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .top-bar {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+.top-bar a:hover {
+  text-decoration: underline;
+}
+
+.page-shell {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.heading-display {
+  font-family: "Georgia", "Times New Roman", "Didot", serif;
+  letter-spacing: 0.02em;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+}
+
+.card-soft {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+}
+
+.badge-pill {
+  border-radius: 999px;
+  padding: 0.25rem 0.9rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.pill-muted {
+  background-color: #f0f0f0;
+  color: #525252;
+}
+
+.nav-main {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: #fafafa;
+}

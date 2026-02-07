@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model barang {
+  KODE_BARANG         Int                @id
+  ID_KATEGORI         Int?
+  NAMA_BARANG         String?            @db.VarChar(35)
+  GAMBAR_BARANG        String?            @db.VarChar(40)
+  HARGA_BARANG        Int?
+  KETERANGAN_BARANG   String?            @db.Text
+  STOK_BARANG         Int?
+  EXP_BARANG          DateTime?          @db.Date
+  STATUS_KETERSEDIAAN barang_STATUS_KETERSEDIAAN?
+  ATTRIBUTE_28        String?            @db.Text
+  kategori            kategori?          @relation(fields: [ID_KATEGORI], references: [ID_KATEGORI], onDelete: Restrict, onUpdate: Restrict, map: "FK_RELATIONSHIP_6")
+  detail_transaksi    detail_transaksi[]
+
+  @@index([ID_KATEGORI], map: "FK_RELATIONSHIP_6")
+}
+
+model detail_transaksi {
+  ID_DETAILTRANSAKSI Int        @id
+  ID_PENJUALAN       Int?
+  KODE_BARANG        Int?
+  JUMLAH             Int?
+  HARGA_SATUAN       Int?
+  SUB_TOTAL          Int?
+  barang             barang?    @relation(fields: [KODE_BARANG], references: [KODE_BARANG], onDelete: Restrict, onUpdate: Restrict, map: "FK_RELATIONSHIP_5")
+  penjualan          penjualan? @relation(fields: [ID_PENJUALAN], references: [ID_PENJUALAN], onDelete: Restrict, onUpdate: Restrict, map: "FK_RELATIONSHIP_7")
+
+  @@index([KODE_BARANG], map: "FK_RELATIONSHIP_5")
+  @@index([ID_PENJUALAN], map: "FK_RELATIONSHIP_7")
+}
+
+model kategori {
+  ID_KATEGORI   Int      @id
+  NAMA_KATEGORI String?  @db.VarChar(45)
+  barang        barang[]
+}
+
+model pelanggan {
+  ID_PELANGGAN       Int         @id
+  NAMA_PELANGGAN     String?     @db.VarChar(40)
+  USERNAME_PELANGGAN String?     @db.VarChar(30)
+  PASSWORD_PELANGGAN String?     @db.VarChar(30)
+  ALAMAT_PELANGGAN   String?     @db.Text
+  penjualan          penjualan[]
+}
+
+model pembayaran {
+  ID_PEMBAYARAN   Int                         @id
+  NAMA_PEMBAYARAN pembayaran_NAMA_PEMBAYARAN?
+  penjualan       penjualan[]
+}
+
+model penjualan {
+  ID_PENJUALAN     Int                         @id
+  ID_PELANGGAN     Int?
+  ID_PEMBAYARAN    Int?
+  ID_USER          Int?
+  TANGGAL          DateTime?                   @db.Date
+  TOTAL            Int?
+  STATUS_TRANSAKSI penjualan_STATUS_TRANSAKSI?
+  detail_transaksi detail_transaksi[]
+  pelanggan        pelanggan?                  @relation(fields: [ID_PELANGGAN], references: [ID_PELANGGAN], onDelete: Restrict, onUpdate: Restrict, map: "FK_RELATIONSHIP_1")
+  pembayaran       pembayaran?                 @relation(fields: [ID_PEMBAYARAN], references: [ID_PEMBAYARAN], onDelete: Restrict, onUpdate: Restrict, map: "FK_RELATIONSHIP_2")
+  user             user?                       @relation(fields: [ID_USER], references: [ID_USER], onDelete: Restrict, onUpdate: Restrict, map: "FK_RELATIONSHIP_3")
+
+  @@index([ID_PELANGGAN], map: "FK_RELATIONSHIP_1")
+  @@index([ID_PEMBAYARAN], map: "FK_RELATIONSHIP_2")
+  @@index([ID_USER], map: "FK_RELATIONSHIP_3")
+}
+
+model user {
+  ID_USER       Int         @id
+  NAMA_USER     String?     @db.VarChar(30)
+  EMAIL_USER     String?     @db.VarChar(30)
+  USERNAME_USER String?     @db.VarChar(30)
+  PASSWORD_USER String?     @db.VarChar(30)
+  ROLE          user_ROLE?
+  ALAMAT_USER   String?     @db.Text
+  penjualan     penjualan[]
+}
+
+enum barang_STATUS_KETERSEDIAAN {
+  Tersedia
+  Habis
+  Preorder
+}
+
+enum pembayaran_NAMA_PEMBAYARAN {
+  Cash
+  Transaksi
+  Kredit
+}
+
+enum user_ROLE {
+  Owner
+  admin
+  EMPTY_ENUM_VALUE @map("")
+}
+
+enum penjualan_STATUS_TRANSAKSI {
+  Belum_bayar  @map("Belum bayar")
+  Dalam_proses @map("Dalam proses")
+  Selesai
+  Gagal
+}
